@@ -56,5 +56,5 @@ Technically the EPROM can actually address 4 patterns however A11 and A12 are co
 ## Pictures
 Here's a working image of the output produced. PAL-BG 4:3  128 pixels across by 154 odd and even fielf interlaced.
 
-
+https://github.com/TVforME/PT430/blob/main/docs/images/PT430-Colorbars-w-ID.jpg?raw=true
 
