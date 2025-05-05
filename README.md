@@ -54,7 +54,8 @@ Each pattern is a block of 2K switchable via address lines A11 and A12.
 Technically the EPROM can actually address 4 patterns however A11 and A12 are connected to a simple toggle switch which configures swithing A11=1, A12=0 or either A11=0, A12=1 which addresses the inner 4K address space leaving the first and last 2K address spaces free for expansion.
 
 ## Pictures
-Here's a working image of the output produced. PAL-BG 4:3  128 pixels across by 154 odd and even fielf interlaced.
+Here's a working image of the output produced. PAL-BG 4:3  128 pixels across by 154 with odd and even field interlacing.
 
-https://github.com/TVforME/PT430/blob/main/docs/images/PT430-Colorbars-w-ID.jpg?raw=true
+![PT430 Color bars](docs/images/PT430-Colorbars-w-ID.jpg)
+
 
