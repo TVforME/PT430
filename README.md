@@ -15,11 +15,13 @@ A7–A10: Selects 14 lines dedicated to the white ID overlay text.
 A11–A12: Pattern selector via the front panel pattern selection toggle switch.
 
 ### Address Map Overview
-Address Range	A12	A11	Description	Usage
-0x0000–0x07FF	0	0	Pattern 0 (2K)	Reserved for expansion
-0x0800–0x0FFF	0	1	Pattern 1 (2K)	Active pattern (color bars)
-0x1000–0x17FF	1	0	Pattern 2 (2K)	Active pattern (pulse & bar)
-0x1800–0x1FFF	1	1	Pattern 3 (2K)	Reserved for expansion
+
+| Address Range   | A12 | A11 | Description           | Usage                  |
+|-----------------|-----|-----|-----------------------|------------------------|
+| 0x0000–0x07FF   | 0   | 0   | Pattern 0 (2K)        | Reserved for expansion |
+| 0x0800–0x0FFF   | 0   | 1   | Pattern 1 (2K)        | Active pattern (color bars) |
+| 0x1000–0x17FF   | 1   | 0   | Pattern 2 (2K)        | Active pattern (pulse & bar) |
+| 0x1800–0x1FFF   | 1   | 1   | Pattern 3 (2K)        | Reserved for expansion |
 
 ### Detailed Address Breakdown
 For each 2K pattern block:
