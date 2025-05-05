@@ -4,17 +4,18 @@ The PRACTEL PT-430, developed in the early 1990s for the Australian broadcast in
 This repository aims to recreate the 27C64 EPROM code that generates the PT-430’s color bar and pulse-and-bar test patterns, including a center-aligned station ID. Through reverse engineering,\
 I've determined that the EPROM utilizes two horizontal counters to sequentially output 4-bit GRBW data, controlling both the test pattern and embedded ID.
 
-This project serves as a functional program to effectively generate the HEX code in the 27C64 EPROM or (28C64 EEPROM) to personalise the test patterns and identification text on the PT-430, enabling continued use in amateur television (ATV) applications.
+This project serves as a functional program to effectively generate the HEX code in the 27C64 EPROM or (28C64 EEPROM) to personalise the test patterns and identification text on the PT-430, enabling\
+continued use in amateur television (ATV) applications.
 
-## 8K EPROM addressing.
-### Address Line Functions
-A0–A6: Selects the first 140 lines of the pattern.
-
-A7–A10: Selects 14 lines dedicated to the white ID overlay text.
-
-A11–A12: Pattern selector via the front panel pattern selection toggle switch.
-
+## 27C64 8K EPROM addressing.
 ### Address Map Overview
+A0–A6: (7 bits) Selects the first 140 lines of the pattern, a cascaded 4bit binary ripple counter 74HC393(IC7) clocked at 5Mhz to form the pixel clock.
+
+A7–A10: (4 bits) Selects 14 lines dedicated to the white ID overlay text counter CD4520 (IC5:B) binary up counter.
+
+A11–A12: (2 bits) Pattern selector via the front panel pattern selection toggle switch.
+
+7 bits translates to a 2K pattern block:
 
 | Address Range   | A12 | A11 | Description           | Usage                  |
 |-----------------|-----|-----|-----------------------|------------------------|
@@ -23,25 +24,28 @@ A11–A12: Pattern selector via the front panel pattern selection toggle switch.
 | 0x1000–0x17FF   | 1   | 0   | Pattern 2 (2K)        | Active pattern (pulse & bar) |
 | 0x1800–0x1FFF   | 1   | 1   | Pattern 3 (2K)        | Reserved for expansion |
 
-### Detailed Address Breakdown
-For each 2K pattern block:
-
-A0–A6 (7 bits): Selects one of 128 lines for the main pattern.
-
-A7–A10 (4 bits): Selects one of 16 lines for the white ID overlay text.
-
-A11–A12 (2 bits): Selects the pattern block.
-
-This configuration allows for 128 main pattern lines and 16 overlay lines per pattern block.
-
 ### Data Line Assignments
 D0: Green channel
-
 D1: Red channel
-
 D2: Blue channel
+D3: White channel added to blue and red channel for balancing 100% white bar
 
-D3: White channel (used for overlay text)
+The White channel (D3) should be active when both Red (D1) and Blue (D2) channels are active.\
+This can be represented by the logical AND operation:  D3 = D1 AND D2
+
+|         | G  | R  |  B |  W             |   4bit    |
+|---------|----|----|----|----------------|-----------|
+| Colour  | D0 | D1 | D2 | D3= D1 AND D2  | HEX CODE  |
+| BLACK   | 0  | 0  | 0  |  0             |    0x00   |
+| RED     | 0  | 1  | 0  |  1             |    0x05   |
+| BLUE    | 0  | 0  | 1  |  1             |    0x03   |
+| MAGENTA | 0  | 1  | 1  |  1             |    0x07   |
+| GREEN   | 1  | 0  | 0  |  0             |    0x01   |
+| YELLOW  | 1  | 1  | 0  |  1             |    0x0D   |
+| CYAN    | 1  | 0  | 1  |  1             |    0x0B   |
+| WHITE   | 1  | 1  | 1  |  1             |    0x0F   |
+
+Each of color output is 74HC273 (IC8) latched which is clocked at 2.5Mhz to provide a stable digital RGBW signal to drive the luminance matrix as well as the U & V color modulators.
 
 ### Pattern Selection Toggle Switch
 The toggle switch connected to A11 and A12 allows selection between the two active pattern blocks:
