@@ -16,37 +16,40 @@ A7–A10: (4 bits) Selects 14 lines dedicated to the white ID overlay text count
 
 A11–A12: (2 bits) Pattern selector via the front panel pattern selection toggle switch.
 
-7 bits translates to a 2K pattern block:
+7 bits translates to a 2K pattern blocks addressing effectively 4 patterns:
 
 | Address Range   | A12 | A11 | Description           | Pattern                       |
 |-----------------|-----|-----|-----------------------|-------------------------------|
-| 0x0000–0x07FF   | 0   | 0   | Pattern 0 (2K)        | Active pattern (color black)  |
-| 0x0800–0x0FFF   | 0   | 1   | Pattern 1 (2K)        | Active pattern (color bars)   |
-| 0x1000–0x17FF   | 1   | 0   | Pattern 2 (2K)        | Active pattern (pulse & bar)  |
-| 0x1800–0x1FFF   | 1   | 1   | Pattern 3 (2K)        | Reserved for expansion        |
+| 0x0000-0x000F   |  X  |  X  |  Not - used Q0        | Not used 0x0F                 |
+| 0x0010–0x07FF   | 0   | 0   | Pattern 0 (2K)        | Pattern (color black)         |
+| 0x0810–0x0FFF   | 0   | 1   | Pattern 1 (2K)        | Pattern (split filed bars)    |
+| 0x1010–0x17FF   | 1   | 0   | Pattern 2 (2K)        | Pattern (pulse & bar)         |
+| 0x1810–0x1FFF   | 1   | 1   | Pattern 3 (2K)        | Patter (color black)          |
+
+Pattern Layout per block of 2K:
+
+| Address Range   | Pattern cycle                   | Function
+|-----------------|---------------------------------|-------------------------------|
+| 0x0010-0x008F   | Initial color bar pattern       |  Iterates over 128 pixels     |
+| 0x0090-0x078F   | Main pattern with text overlay  |  odd/even field 14 lines      |
+| 0x0790-0x07FF   | Line 16 pattern                 |   Iterates over 128 pixels    |
+|-----------------|---------------------------------|-------------------------------|
+
 
 ### Data Line Assignments
 D0: Green channel
 D1: Red channel
 D2: Blue channel
-D3: White channel added to blue and red channel for balancing 100% white bar
+D3: White channel
+
+Note - Although the combination of D0 || D1 || D2 make white, D3 is used as an independant white signal to cancel out effects of 100% white.
+The white is added to the red and blue in the U-V modulator.
 
 The White channel (D3) should be active when both Red (D1) and Blue (D2) channels are active.\
 This can be represented by the logical AND operation:  D3 = D1 AND D2
 
-|         | G  | R  |  B |  W             |   4bit    |
-|---------|----|----|----|----------------|-----------|
-| Colour  | D0 | D1 | D2 | D3= D1 AND D2  | HEX CODE  |
-| BLACK   | 0  | 0  | 0  |  0             |    0x00   |
-| RED     | 0  | 1  | 0  |  1             |    0x05   |
-| BLUE    | 0  | 0  | 1  |  1             |    0x03   |
-| MAGENTA | 0  | 1  | 1  |  1             |    0x07   |
-| GREEN   | 1  | 0  | 0  |  0             |    0x01   |
-| YELLOW  | 1  | 1  | 0  |  1             |    0x0D   |
-| CYAN    | 1  | 0  | 1  |  1             |    0x0B   |
-| WHITE   | 1  | 1  | 1  |  1             |    0x0F   |
-
-Each of color output is 74HC273 (IC8) latched which is clocked at 2.5Mhz to provide a stable digital RGBW signal to drive the luminance matrix in addition to the U & V color modulators.
+Each of color output is latched at 2.5Mhz using 74HC273 (IC8) to provide a stable digital RGBW timed on the 2.5Mhx boundry.
+Required reduce jitter and drive the luminance matrix in addition to the U & V color modulators.
 
 ### Pattern Selection Toggle Switch
 The toggle switch connected to A11 and A12 allows selection between the two active pattern blocks:
@@ -58,11 +61,10 @@ Position C: A11=0, A12=0 → Selects Pattern 0 (0x0000–0x07FF)
 Position 2: A11=1, A12=0 → Selects Pattern 2 (0x1000–0x17FF)
 
 Each pattern is a block of 2K switchable via address lines A11 and A12.
-Technically the EPROM can address 4 patterns.
 
 ## Pictures
-Here's a working image of the output with pattern 1 selected.\
-PAL-BG 4:3  128 pixels across by 154 with odd and even field interlacing.
+Here's a working image of the output with pattern 1 selected using the original EPROM.
+PAL-BG 4:3
 
 ![PT430 Color bars](docs/images/PT430-Colorbars-w-ID.jpg)
 
