@@ -1,7 +1,6 @@
-/*
-Using Makefile to build on windows however added Linux, can't see why it can't be built
-on Linux. File paths and '/\' may need changing in output.c
-*/
+# Using Makefile to build on windows however added Linux, can't see why it can't be built
+# on Linux. File paths and '/\' may need changing in output.c
+
 
 # Detect OS
 ifeq ($(OS),Windows_NT)
