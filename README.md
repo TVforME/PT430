@@ -33,8 +33,6 @@ Pattern Layout per block of 2K:
 | 0x0010-0x008F   | Initial color bar pattern       |  Iterates over 128 pixels     |
 | 0x0090-0x078F   | Main pattern with text overlay  |  odd/even field 14 lines      |
 | 0x0790-0x07FF   | Line 16 pattern                 |   Iterates over 128 pixels    |
-|-----------------|---------------------------------|-------------------------------|
-
 
 ### Data Line Assignments
 D0: Green channel
