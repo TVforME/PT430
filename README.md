@@ -51,11 +51,14 @@ Pattern Layout per block of 2K:
 | 0x1090-0x178F   | Main pattern  no text  14 x 128 pixels of balck         |  odd/even field, 14 lines x 128 pixels |
 | 0x1790-0x17FF   | Last pattern color black  (128 of Black pixels)         |  Iterates over 1 x 128 pixels          |
 
-### Data Line Assignments
-D0: Green channel
-D1: Red channel
-D2: Blue channel
-D3: White channel
+### EPROM Dataline Assignments:
+
+| Data line  | channel     |
+|------------|-------------|
+| D0         |    GREEN    |
+| D1         |    RED      |
+| D2         |    BLUE     |
+| D3         |    WHITE    |
 
 Note - Although the combination of D0 || D1 || D2 make white, D3 is used as an independant white signal to cancel out effects of 100% white.
 The white is added to the red and blue in the U-V modulator.
