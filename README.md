@@ -1,12 +1,16 @@
-# PT430
-PRACTEL PT-430 Color bar Generator EPROM Code generator.
-The PRACTEL PT-430, developed in the early 1990s for the Australian broadcast industry, was primarily used in Electronic News Gathering (ENG) to transmit station IDs over microwave links.\
-This repository aims to recreate the 27C64 EPROM code that generates the PT-430’s color black, color bars and pulse-and-bar test patterns, including a center-aligned station ID. Through reverse engineering,\
-I've determined that the EPROM utilizes two horizontal counters to sequentially output a 7-bit and a second 4-bit binary counter to sequence the correct GRBW data.\
-What's inside the EPROM is a mystery 🕵️ which has lead to reverse Engineering the HEX code inside the 27C64 to find out how and can we implement both the pattern sequence as well as the text identification.
+# PRACTEL PT-430 Color bar Generator EPROM Code generator.
+The PRACTEL PT-430, were developed in the early 1990s for the Australian broadcast industry, and primarily used in Electronic News Gathering (ENG) to provide a constant video and audio between the station over a microwave link.
 
-This project serves as a functional program to effectively generate the HEX code in the 27C64 EPROM or (28C64 EEPROM) to personalise the test patterns and identification text on the PT-430, enabling\
+This project serves as a functional program to effectively generate the HEX code in the 27C64 EPROM to personalise the test patterns and identification text on the PT-430, enabling
 continued use of the PT430 for amateur television (ATV) applications.
+
+This repository's aim was to build a software tool to generate the necessary HEX code for a 27C64 (8K) since the DOS program was un-obtainable and probably long gone.
+The generator produce 3 working patterns color black, color bars and pulse-and-bar test patterns. Color bars and pulse-and-bar produced a center-aligned station ID.
+
+
+# May 2025.
+After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary colors including Black and White.\
+Cascaded 4 bit counters (74HC393) count 7-bits horizontally clocking out the same line for 128 pixels , then once at line 140, derived from vertical counter a 4-bit binary up counter (4520) takes over clocking out 16 lines of odd/even lines of either color bars of color black pattern overlayed with text id chars bitmap pixels for 7 lines (5x7 font) of which repeat for odd/even fields (14 lines) then is held at reset at line 156 repeating the last line 16 till the end of the next frame awaiting another vertical interval.
 
 ## 27C64 8K EPROM addressing as I see it.
 ### Address Map Overview
@@ -21,18 +25,31 @@ A11–A12: (2 bits) Pattern selector via the front panel pattern selection toggl
 | Address Range   | A12 | A11 | Description           | Pattern                       |
 |-----------------|-----|-----|-----------------------|-------------------------------|
 | 0x0000-0x000F   |  X  |  X  |  Not - used Q0        | Not used 0x0F                 |
-| 0x0010–0x07FF   | 0   | 0   | Pattern 0 (2K)        | Pattern (color black)         |
+| 0x0010–0x07FF   | 0   | 0   | Pattern 0 (2K)        | Pattern (color bars)          |
 | 0x0810–0x0FFF   | 0   | 1   | Pattern 1 (2K)        | Pattern (split filed bars)    |
 | 0x1010–0x17FF   | 1   | 0   | Pattern 2 (2K)        | Pattern (pulse & bar)         |
 | 0x1810–0x1FFF   | 1   | 1   | Pattern 3 (2K)        | Patter (color black)          |
 
 Pattern Layout per block of 2K:
 
-| Address Range   | Pattern cycle                   | Function
-|-----------------|---------------------------------|-------------------------------|
-| 0x0010-0x008F   | Initial color bar pattern       |  Iterates over 128 pixels     |
-| 0x0090-0x078F   | Main pattern with text overlay  |  odd/even field 14 lines      |
-| 0x0790-0x07FF   | Line 16 pattern                 |   Iterates over 128 pixels    |
+| Address Range   | Pattern cycle                                           | Function
+|-----------------|---------------------------------------------------------|----------------------------------------|
+|    Pattern 1    |                                                         |                                        |
+| 0x0010-0x008F   | Initial color bars (8 bars each of 16 pixels)           |  Iterates over 1 x 128 pixels          |
+| 0x0090-0x078F   | Main pattern with text ID over color bars               |  odd/even field, 14 lines x 128 pixels |
+| 0x0790-0x07FF   | Last pattern color bars (8 bars each of 16 pixels)      |  Iterates over 1 x 128 pixels          |
+|    Pattern 2    |                                                         |                                        |
+| 0x0810-0x088F   | Initial color bar (8 bars each of 16 pixels)            |  Iterates over 1 x 128 pixels          |
+| 0x0890-0x0F8F   | Main pattern with text ID over color bars               |  odd/even field, 14 lines x 128 pixels |
+| 0x0F90-0x0FFF   | Last pattern split bars (128 of Red pixels)             |  Iterates over 1 x 128 pixels          |
+|    Pattern 3    |                                                         |                                        |
+| 0x1010-0x108F   | Initial color bar (8 bars each of 16 pixels)            |  Iterates over 1 x 128 pixels          |
+| 0x1090-0x178F   | Main pattern with text ID over color bars               |  odd/even field, 14 lines x 128 pixels |
+| 0x1790-0x17FF   | Last pattern pulse & bar ( pulse 1 pixel, bar 8 pixels) |  Iterates over 1 x 128 pixels          |
+|    Pattern 4    |                                                         |                                        |
+| 0x1810-0x188F   | Initial color black (128 pixels of black)               |  Iterates over 1 x 128 pixels          |
+| 0x1090-0x178F   | Main pattern  no text  14 x 128 pixels of balck         |  odd/even field, 14 lines x 128 pixels |
+| 0x1790-0x17FF   | Last pattern color black  (128 of Black pixels)         |  Iterates over 1 x 128 pixels          |
 
 ### Data Line Assignments
 D0: Green channel
