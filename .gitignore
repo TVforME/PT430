@@ -1,3 +1,8 @@
+# ignore all bin/*.o object files
+bin/*.o
+
+# ignore all files in wprom/ directory and any of its subdirectories
+eprom/**/*.*
 
 # ignore all files in doc/ directory and any of its subdirectories
 doc/**/*.*
