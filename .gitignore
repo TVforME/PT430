@@ -1,5 +1,5 @@
 # ignore these types of files
 .gitignore
-./docs/*
+docs/**/*
 ./eprom/*
 
