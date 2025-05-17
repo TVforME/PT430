@@ -1,8 +1,11 @@
 # ignore all bin/*.o object files
 bin/*.o
 
-# ignore all files in docs/ directory and any of its subdirectories
-docs/**/*.*
+# ignore all .pdf files in the doc/ directory and any of its subdirectories
+docs/**/*.pdf
+
+# ignore all png filess in docs/ directory and any of its subdirectories
+docs/**/*.png
 
 # ignore all files in eprom/ directory
 eprom/*.*
