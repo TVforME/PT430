@@ -1,6 +1,5 @@
 # ignore these types of files
-*.pdf
-*.jpg
-*.png
-*.bin
-*.hex
+.gitignore
+*/docs/
+*/eprom/ 
+
