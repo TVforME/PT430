@@ -1,6 +1,6 @@
 # ignore these types of files
 .gitignore
-.readme.md
+.README.md
 ./docs/*
 ./eprom/*
 
