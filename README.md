@@ -1,5 +1,5 @@
 # PRACTEL PT-430 Color bar Generator EPROM Code generator.
-The PRACTEL PT-430, were developed in the early 1990s for the Australian broadcast industry, and primarily used in Electronic News Gathering (ENG) to provide a constant video and audio between the station over a microwave link.
+The PRACTEL PT-430, were developed in the early 1990s for the Australian broadcast industry, and primarily used in (ENG) Electronic News Gathering to provide a constant video and audio between the station over a microwave link.
 
 This project serves as a functional program to effectively generate the HEX code in the 27C64 EPROM to personalise the test patterns and identification text on the PT-430, enabling
 continued use of the PT430 for amateur television (ATV) applications.
@@ -9,7 +9,7 @@ The generator produce 3 working patterns color black, color bars and pulse-and-b
 
 
 # May 2025.
-After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary colors including Black and White.\
+After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary adaptive colors with 0x00 Black and 0xFF White.\
 Cascaded 4 bit counters (74HC393) count 7-bits horizontally clocking out the same line for 128 pixels , then once at line 140, derived from vertical counter a 4-bit binary up counter (4520) takes over clocking out 16 lines of odd/even lines of either color bars of color black pattern overlayed with text id chars bitmap pixels for 7 lines (5x7 font) of which repeat for odd/even fields (14 lines) then is held at reset at line 156 repeating the last line 16 till the end of the next frame awaiting another vertical interval.
 
 ## 27C64 8K EPROM addressing as I see it.
@@ -61,24 +61,20 @@ Pattern Layout per block of 2K:
 | D3         |    WHITE    |
 
 Note - Although the combination of D0 || D1 || D2 make white, D3 is used as an independant white signal to cancel out effects of 100% white.
-The white is added to the red and blue in the U-V modulator.
+The white is added to the red and blue matrix in the U-V modulator.
 
-The White channel (D3) should be active when both Red (D1) and Blue (D2) channels are active.\
-This can be represented by the logical AND operation:  D3 = D1 AND D2
-
-Each of color output is latched at 2.5Mhz using 74HC273 (IC8) to provide a stable digital RGBW timed on the 2.5Mhx boundry.
-Required reduce jitter and drive the luminance matrix in addition to the U & V color modulators.
+Each of color outputs are latched by a 74HC273 (IC8) to provide a stable digital RGBW to the luminace and U-V matrix. 
 
 ### Pattern Selection Toggle Switch
 The toggle switch connected to A11 and A12 allows selection between the two active pattern blocks:
 
 Position 1: A11=0, A12=1 → Selects Pattern 1 (0x0800–0x0FFF)
 
-Position C: A11=0, A12=0 → Selects Pattern 0 (0x0000–0x07FF)
+Position 2: A11=0, A12=0 → Selects Pattern 2 (0x0000–0x07FF)
 
-Position 2: A11=1, A12=0 → Selects Pattern 2 (0x1000–0x17FF)
+Position 3: A11=1, A12=0 → Selects Pattern 3 (0x1000–0x17FF)
 
-Each pattern is a block of 2K switchable via address lines A11 and A12.
+Position 4: A11=1, A12=1 → Selects Pattern 4 (0x1000–0x17FF)  (Not usable without modification of the front toggle switch)
 
 ## Pictures
 Here's a working image of the output with pattern 1 selected using the original EPROM.
