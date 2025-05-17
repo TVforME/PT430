@@ -1,13 +1,6 @@
-# ignore all bin/*.o object files
-bin/*.o
-
-# ignore all .pdf files in the doc/ directory and any of its subdirectories
-docs/**/*.pdf
-
-# ignore all jpg filess in docs/ directory and any of its subdirectories
-docs/**/*.jpg
-
-# ignore all files in eprom/ directory
-eprom/*.*
-
-
+# ignore these types of files
+*.pdf
+*.jpg
+*.png
+*.bin
+*.hex
