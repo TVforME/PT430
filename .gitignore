@@ -4,8 +4,8 @@ bin/*.o
 # ignore all .pdf files in the doc/ directory and any of its subdirectories
 docs/**/*.pdf
 
-# ignore all png filess in docs/ directory and any of its subdirectories
-docs/**/*.png
+# ignore all jpg filess in docs/ directory and any of its subdirectories
+docs/**/*.jpg
 
 # ignore all files in eprom/ directory
 eprom/*.*
