@@ -1,0 +1,3 @@
+
+# ignore all files in doc/ directory and any of its subdirectories
+doc/**/*.*
