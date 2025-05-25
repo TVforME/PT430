@@ -27,16 +27,19 @@ The PRACTEL PT-430, were developed in the early 1990s for the Australian broadca
 </table>
 
 
-This project reverse Enginners the EPROM code to develop a program to generate the correct HEX code in the 27C64 EPROM for the purpose of personalise the test patterns and identification text on the PT-430.
-Three a few remaining PT-430 clor bar generators continued use of the PT430 for amateur television (ATV) applications.
+This project is my suuccessful reverse Engineering of the code within the EPROM and developing a C99 program to re-generate both the patterns and ID text overly for the purpose of personalise the test patterns and identification text on the PT-430.
+There remains a few PT-430 generators around with the knowledge that not all is lost and continued using the PT430 for amateur television (ATV) applications. 
+4:3 PAL BG format is old skool however, there maybe instances for using and converting the CVBS output into DVB with some cheap converters. I know both the SAA1043 and SAA1044 philips sync generator and subcarrier coupler were well known to be used in top end cammeras and philips sync pulse generators.
 
-The original EPROM program  I believe was a DOS program written in GW Basic unfortunately, now un-obtainium and probably stashed with the disk set for DOS 6.1?
+The reverse Engineering continues to hone my skills of understanding the addressing and developing a C program for windows and linux with the linux build yet untested.
+
+# Moreover:-
+The original EPROM program I believe was written in GW Basic unfortunately, now un-obtainium the original disk is more than likely gone for ever stashed with the DOS 6.1 disk set?
+
 The generator produce 3 working patterns in 4:3 aspect ratio of color black, color bars and pulse-and-bar test patterns. Both the Color bars and pulse-and-bar produced a center-aligned station ID.
 My program generate 4 patterns the 4th pattern not able to be displayed due to the use of a center-off-toggle switch. If the switch is replaced with the 4 position selector switch, the 4th pattern is available for free?
-
-
-# May 2025.
 After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary adaptive colors with 0x00 Black and 0x0F White.\
+
 Referrencing to the [PT-430 schematic](docs/PRACTEL%20PT430%20Colorbar%20Generator.pdf)
 
 Cascaded 4 bit counters (74HC393) count 7-bits horizontally clocking out the same line for 128 pixels , then once at line 140, derived from vertical counter a 4-bit binary up counter (4520) takes over clocking out 16 lines of odd/even lines of either color bars of color black pattern overlayed with text id chars bitmap pixels for 7 lines (5x7 font) of which repeat for odd/even fields (14 lines) then is held at reset at line 156 repeating the last line 16 till the end of the next frame awaiting another vertical interval.
@@ -89,7 +92,7 @@ Pattern Layout per block of 2K:
 | D2         |    BLUE     |
 | D3         |    WHITE    |
 
-Note - Although the combination of D0 || D1 || D2 make white, D3 is used as an independant white signal to cancel out effects of 100% white.
+Note - Although the combination of D0 AND D1 AND D2 make white, D3 is used as an independant white signal to cancel out effects of 100% white.
 The white is added to the red and blue matrix in the U-V modulator.
 
 Each of color outputs are latched by a 74HC273 (IC8) to provide a stable digital RGBW to the luminace and U-V matrix. 
