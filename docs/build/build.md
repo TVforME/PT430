@@ -34,7 +34,7 @@ Download the zip file and unzip to folder PT430-main
 If downloading zip file, rename PT430-main to PT430
 
 ### 4. Building TCGEN.exe
-Note: on Linix use build.sh (not tested) chmod +x build.sh first.
+Note: with Linux use build.sh (not tested) chmod +x build.sh first.
 Using cmd navigate to where you unziped of copied your PT430 folder to.
 ```bash
 cd <YOULOCATION>/PT430/src
