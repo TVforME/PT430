@@ -102,26 +102,25 @@ int writeRawHexFile(const uint8_t* data, int length, const char* filename) {
     fprintf(fp, "// Format: Raw hex dump, 16 bytes per line\n");
     fprintf(fp, "//\n");
     fprintf(fp, "// Address Pattern Layout:\n");
-    fprintf(fp, "// 0x0000-0x000F: First 16 bytes unused (skipped)\n");
-    fprintf(fp, "// 0x0010-0x07FF: Pattern 1 - Color Bars (A11=0, A12=0)\n");
-    fprintf(fp, "//   - 0x0010-0x008F: Initial color bar pattern\n");
-    fprintf(fp, "//   - 0x0090-0x078F: Main pattern with text overlay\n");
-    fprintf(fp, "//   - 0x0790-0x07FF: Line 16 pattern\n");
+    fprintf(fp, "// 0x0000-0x07FF: Pattern 1 - Color Bars (A11=0, A12=0) [CENTER POSITION]\n");
+    fprintf(fp, "//   - 0x0000-0x007F: Initial pattern = Color Bar pattern\n");
+    fprintf(fp, "//   - 0x0080-0x077F: Main pattern area Color Bar overlayed with ID\n");
+    fprintf(fp, "//   - 0x0780-0x07FF: Line 16 pattern = Color Bar\n");
     fprintf(fp, "//\n");
-    fprintf(fp, "// 0x0800-0x0FFF: Pattern 2 - Split Field Red (A11=1, A12=0)\n");
-    fprintf(fp, "//   - 0x0810-0x088F: Initial pattern\n");
-    fprintf(fp, "//   - 0x0890-0x0F8F: Main pattern area\n");
-    fprintf(fp, "//   - 0x0F90-0x0FFF: Line 16 pattern\n");
+    fprintf(fp, "// 0x0800-0x0FFF: Pattern 2 - Split Field Red (A11=1, A12=0) [RIGHT POSITION]\n");
+    fprintf(fp, "//   - 0x0800-0x087F: Initial pattern= Color Bar pattern\n");
+    fprintf(fp, "//   - 0x0880-0x0F7F: Main pattern area Color Bar overlayed with ID\n");
+    fprintf(fp, "//   - 0x0F80-0x0FFF: Line 16 pattern = Red\n");
     fprintf(fp, "//\n");
-    fprintf(fp, "// 0x1000-0x17FF: Pattern 3 - Pulse & Bar (A11=0, A12=1)\n");
-    fprintf(fp, "//   - 0x1010-0x108F: Initial pattern\n");
-    fprintf(fp, "//   - 0x1090-0x178F: Main pattern with text overlay\n");
-    fprintf(fp, "//   - 0x1790-0x17FF: Line 16 with pulse and bar\n");
+    fprintf(fp, "// 0x1000-0x17FF: Pattern 3 - Pulse & Bar (A11=0, A12=1) [LEFT POSITION]\n");
+    fprintf(fp, "//   - 0x1000-0x107F: Initial pattern = Color Bar pattern\n");
+    fprintf(fp, "//   - 0x1080-0x177F: Main pattern area Color Bar overlayed with ID\n");
+    fprintf(fp, "//   - 0x1780-0x17FF: Line 16 pattern = Pulse & Bar\n");
     fprintf(fp, "//\n");
-    fprintf(fp, "// 0x1800-0x1FFF: Pattern 4 - Color Black (A11=1, A12=1)\n");
-    fprintf(fp, "//   - 0x1810-0x188F: Initial pattern\n");
-    fprintf(fp, "//   - 0x1890-0x1F8F: Main pattern area\n");
-    fprintf(fp, "//   - 0x1F90-0x1FFF: Line 16 pattern\n");
+    fprintf(fp, "// 0x1800-0x1FFF: Pattern 4 - Color Black (A11=1, A12=1) [NOT USED]\n");
+    fprintf(fp, "//   - 0x1800-0x187F: Initial pattern = Color Black\n");
+    fprintf(fp, "//   - 0x1880-0x1F7F: Main pattern area Color Black (NO ID Overlay)\n");
+    fprintf(fp, "//   - 0x1F80-0x1FFF: Line 16 pattern = Color Black\n");
     fprintf(fp, "//\n");
     fprintf(fp, "// Addr   0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F\n");
     fprintf(fp, "//-------------------------------------------------------\n");
@@ -131,43 +130,40 @@ int writeRawHexFile(const uint8_t* data, int length, const char* filename) {
           
         switch (addr) {
             case 0x0000:
-                fprintf(fp, "// Unused (0x0000-0x000F)\n\n");
+                fprintf(fp, "\n// (0x0000-0x007F) Pattern 1 - Color Bars Initial Pattern\n\n");
                 break;
-            case 0x0010:
-                fprintf(fp, "\n// Pattern 1 - Color Bars Initial Pattern (0x0010-0x008F)\n\n");
+            case 0x0080:
+                fprintf(fp, "\n// (0x0080-0x077F) Pattern 1 - Color Bars Main Pattern with Text\n\n");
                 break;
-            case 0x0090:
-                fprintf(fp, "\n// Pattern 1 - Color Bars Main Pattern with Text (0x0090-0x078F)\n\n");
+            case 0x0780:
+                fprintf(fp, "\n// (0x0780-0x07FF) Pattern 1 - Color Bars Line 16\n\n");
                 break;
-            case 0x0790:
-                fprintf(fp, "\n// Pattern 1 - Color Bars Line 16 (0x0790-0x07FF)\n\n");
+            case 0x0800:
+                fprintf(fp, "\n// (0x0800-0x087F) Pattern 2 - Split Field Bars Initial Pattern [Color Bars]\n\n");
                 break;
-            case 0x0810:
-                fprintf(fp, "\n// Pattern 2 - Split Field Initial Pattern (0x0810-0x088F)\n\n");
+            case 0x0880:
+                fprintf(fp, "\n// (0x0880-0x08FF) Pattern 2 - Split Field Bars Main Pattern with Text [Color Bars]\n\n");
                 break;
-            case 0x0890:
-                fprintf(fp, "\n// Pattern 2 -  Split Field Main Pattern with Text (0x0890-0x088F)\n\n");
+            case 0x0F80:
+                fprintf(fp, "\n// (0x0F80-0x0FFF) Pattern 2 - Split Field Bars Line 16 [RED]\n\n");
                 break;
-            case 0x0F90:
-                fprintf(fp, "\n// Pattern 2 - Split Field Line 16 (0x0F90-0x100F)\n\n");
+            case 0x1000:
+                fprintf(fp, "\n// (0x1000-0x107F) Pattern 3 - Pulse & Bar Initial Pattern [Color Bars]\n\n");
                 break;
-            case 0x1010:
-                fprintf(fp, "\n// Pattern 3 - Pulse & Bar Initial Pattern (0x1010-0x108F)\n\n");
+            case 0x1080:
+                fprintf(fp, "\n// (0x1080-0x177F) Pattern 3 - Pulse & Bar Main Pattern with Text [Color Bars]\n\n");
                 break;
-            case 0x1090:
-                fprintf(fp, "\n// Pattern 3 - Pulse & Bar Main Pattern with Text (0x1090-0x178F)\n\n");
+            case 0x1780:
+                fprintf(fp, "\n// (0x1780-0x17FF) Pattern 3 - Pulse & Bar Line 16 [Pulse & Bar]\n\n");
                 break;
-            case 0x1790:
-                fprintf(fp, "\n// Pattern 3 - Pulse & Bar Line 16 (0x1790-0x17FF)\n\n");
+            case 0x1800:
+                fprintf(fp, "\n// (0x1800-0x187F) Pattern 4 - Color Black Initial Pattern [Black]\n\n");
                 break;
-            case 0x1810:
-                fprintf(fp, "\n// Pattern 4 - Color Black Initial Pattern (0x1810-0x1FFF)\n\n");
+            case 0x1880:
+                fprintf(fp, "\n// (0x1880-0x1F7F) Pattern 4 - Color Black Main Pattern no id overlay [Black]\n\n");
                 break;
-            case 0x1890:
-                fprintf(fp, "\n// Pattern 4 - Color Black Main Pattern with Text (0x1890-0x1F7F)\n\n");
-                break;
-            case 0x1F90:
-                fprintf(fp, "\n// Pattern 4 - Color Black Line 16 (0x1F90-0x1FFF)\n");
+            case 0x1F80:
+                fprintf(fp, "\n// (0x1F80-0x1FFF) Pattern 4 - Color Black Line 16 [Black]\n");
             }  
 
     fprintf(fp, "    %04X: ", addr);
