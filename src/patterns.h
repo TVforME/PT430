@@ -40,20 +40,14 @@
 
 // Pattern memory locations (base addresses)
 #define PATTERN_BARS     0x0000  // A11=0, A12=0 (Color Bars)
-
-// Two choices
-#define PATTERN_BLACK    0x0800  // A11=1, A12=0 (Color Black)
 #define PATTERN_RED		 0x0800  // A11=1, A12=0 (Spilt Field Red)
-
 #define PATTERN_PULSE    0x1000  // A11=0, A12=1 (Pulse & Bar)
-#define PATTERN_UNUSED   0x1800  // A11=1, A12=1 (Unused - black)
+#define PATTERN_BLACK    0x1800  // A11=1, A12=1 (Color black)
 
-// Pattern internal offsets
-#define UNUSED_SIZE       0x00F   // First 16 bytes are blank
-#define PATTERN_OFFSET    0x010   // Start of pattern data after clock area
-#define TEXT_START        0x090   // Start of text overlay area
+// Pattern offsets
+#define TEXT_START        0x080   // Start of text overlay area
 #define TEXT_AREA_OFFSET  0x800   // Text area in each pattern block
-#define LINE_16_OFFSET    0x790   // Start of line 16 pattern
+#define LINE_16_OFFSET    0x780   // Start of line 16 pattern
 
 // Character and text bitmap dimensions
 #define CHAR_WIDTH                          5   // Width of each character in pixels
