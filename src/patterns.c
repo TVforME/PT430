@@ -23,37 +23,32 @@
 // Format: Raw hex dump, 16 bytes per line
 //
 // Address Pattern Layout:
-// 0x0000-0x000F: First 16 bytes unused (skipped)
 //
-// 0x0010-0x07FF: Pattern 1 - Color Bars (A11=0, A12=0) Select lines
-//   - 0x0010-0x008F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
-//   - 0x0090-0x078F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields.         
-//   - 0x0790-0x07FF: Line 16 pattern. color bars. Lines 156 - 310?  Repeats till vertical sync reset.
+// 0x0000-0x07FF: Pattern 1 - Color Bars (A11=0, A12=0) Select lines
+//   - 0x0000-0x007F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
+//   - 0x0080-0x077F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields.         
+//   - 0x0780-0x07FF: Line 16 pattern. color bars. Lines 156 - 310?  Repeats till vertical sync reset.
 //
 // 0x0800-0x0FFF: Pattern 2 - Split Field Red (A11=1, A12=0) Select lines
-//   - 0x0810-0x088F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
-//   - 0x0890-0x0F8F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields. 
-//   - 0x0F90-0x0FFF: Line 16 pattern color red. Lines 156 - 310?  Repeats till vertical sync reset.
+//   - 0x0800-0x087F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
+//   - 0x0880-0x0F7F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields. 
+//   - 0x0F80-0x0FFF: Line 16 pattern color red. Lines 156 - 310?  Repeats till vertical sync reset.
 //
 // 0x1000-0x17FF: Pattern 3 - Pulse & Bar (A11=0, A12=1) Select lines
-//   - 0x1010-0x108F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
-//   - 0x1090-0x178F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields.
-//   - 0x1790-0x17FF: Line 16 with pulse and bar. Lines 156 - 310?  Repeats till vertical sync reset.
+//   - 0x1000-0x107F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
+//   - 0x1080-0x177F: Main pattern with text overlay. Lines 141 - 154 alternates odd/even fields.
+//   - 0x1780-0x17FF: Line 16 with pulse and bar. Lines 156 - 310?  Repeats till vertical sync reset.
 //
 // 0x1800-0x1FFF: Pattern 4 - Unused Color Black (A11=1, A12=1) Select lines
-//   - 0x1810-0x188F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
-//   - 0x1890-0x1F8F: Main pattern area. Lines 141 - 154 alternates odd/even fields.
-//   - 0x1F90-0x1FFF: Line 16 pattern. color black. Lines 156 - 310?  Repeats till vertical sync reset.          
+//   - 0x1800-0x187F: Initial pattern. Lines 1 - 140 (repeats 128 pixels)
+//   - 0x1880-0x1F7F: Main pattern area. Lines 141 - 154 alternates odd/even fields.
+//   - 0x1F80-0x1FFF: Line 16 pattern. color black. Lines 156 - 310?  Repeats till vertical sync reset.          
  */
-
-
-
 
 #include "patterns.h"
 #include "output.h"
 #include <string.h>
 #include <ctype.h>
-
 
 // Helper function to get character index
 static int getCharIndex(char c) {
@@ -66,21 +61,22 @@ static int getCharIndex(char c) {
 }
 
 // Color bar pattern generator
+// All weirdness the last bar black is first
 uint8_t generateColorBar(int pixel_pos) {
     int bar = (pixel_pos / BAR_WIDTH) % NUM_BARS;
 
     switch (bar) {
-        case 0: return COLOR_WHITE;
-        case 1: return COLOR_YELLOW;
-        case 2: return COLOR_CYAN;
-        case 3: return COLOR_GREEN;
-        case 4: return COLOR_MAGENTA;
-        case 5: return COLOR_RED;
-        case 6: return COLOR_BLUE;
+        case 0: return COLOR_BLACK;
+        case 1: return COLOR_WHITE;
+        case 2: return COLOR_YELLOW;
+        case 3: return COLOR_CYAN;
+        case 4: return COLOR_GREEN;
+        case 5: return COLOR_MAGENTA;
+        case 6: return COLOR_RED;
+        case 7: return COLOR_BLUE;
         default: return COLOR_BLACK;
     }
 }
-
 
 // Pulse and Bar pattern generator
 uint8_t generatePulseBar(int pixel_pos) {
@@ -96,7 +92,6 @@ uint8_t generatePulseBar(int pixel_pos) {
         return COLOR_BLACK;
     }
 }
-
 
 // Function to generate a text bitmap chars
 void generateTextBitmap(const char* text, uint8_t* bitmap) {
@@ -162,7 +157,6 @@ void generateTextBitmap(const char* text, uint8_t* bitmap) {
     }
 }
 
-
 // Generate pattern format in EPROM buffer.
 bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id_text) {
     if (!eprom_data) {
@@ -173,17 +167,9 @@ bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id
    // Initialize EPROM buffer to black.
     memset(eprom_data, COLOR_BLACK, EPROM_SIZE);
 
-
     // Generate the text bitmap
     generateTextBitmap(id_text, bitmap_data);
     
-
-    // 74HC393A output Q0 is NOT used for direct addressing, set first 16 bytes to 0x00
-    /*
-    for (int i = 0; i <= UNUSED_SIZE; i++) {
-        eprom_data[i] = 0x00;  // Write zeros at base_addr
-    }
-    */
     //  2K jump to the pattern offset.
     for (int section = 0; section < 4; section++) {
         int base_addr;
@@ -191,12 +177,13 @@ bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id
             case 0: base_addr = PATTERN_BARS; break;
             case 1: base_addr = PATTERN_RED; break;
             case 2: base_addr = PATTERN_PULSE; break;
-            case 3: base_addr = PATTERN_UNUSED; break;
+            case 3: base_addr = PATTERN_BLACK; break;
         }
 
-        // create the top 139 lines of pattern, 74HC383B continually count 128 pixels.
+        // Create the top 139 lines of pattern which is always color bars
+        // 74HC383B continually count 128 pixels.
         for (int pixel = 0; pixel < PIXELS_PER_LINE; pixel++) {
-            int addr = base_addr + PATTERN_OFFSET + pixel;
+            int addr = base_addr + pixel;
             uint8_t pattern;
 
             if (section == 0 || section == 1 || section == 2) {
@@ -259,8 +246,8 @@ bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id
     return true;
 }
 
-// Function to sanitize a filename
-void sanitizeFilename(char* filename) {
+// Function to sanitise a filename
+void sanitiseFilename(char* filename) {
     size_t len = strlen(filename);
     for (size_t i = 0; i < len; i++) {
         if (!isalnum(filename[i]) && filename[i] != '_' && filename[i] != '-') { // Allow only alphanumeric, underscore, and hyphen
