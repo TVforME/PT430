@@ -245,14 +245,3 @@ bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id
 
     return true;
 }
-
-// Function to sanitise a filename
-void sanitiseFilename(char* filename) {
-    size_t len = strlen(filename);
-    for (size_t i = 0; i < len; i++) {
-        if (!isalnum(filename[i]) && filename[i] != '_' && filename[i] != '-') { // Allow only alphanumeric, underscore, and hyphen
-            filename[i] = '_'; // Replace invalid characters with underscore
-        }
-    }
-}
-
