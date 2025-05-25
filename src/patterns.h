@@ -131,7 +131,6 @@ uint8_t generateColorBar(int pixel_pos);
 uint8_t generatePulseBar(int pixel_pos);
 void generateTextBitmap(const char* text, uint8_t* bitmap);
 bool generateEpromData(uint8_t* eprom_data, uint8_t* bitmap_data, const char* id_text);
-void sanitizeFilename(char* filename);
 
 #endif // PATTERNS_H
 
