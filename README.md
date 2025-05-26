@@ -38,7 +38,7 @@ The original EPROM program I believe was written in GW Basic unfortunately, now 
 
 The generator produce 3 working patterns in 4:3 aspect ratio of color black, color bars and pulse-and-bar test patterns. Both the Color bars and pulse-and-bar produced a center-aligned station ID.
 My program generate 4 patterns the 4th pattern not able to be displayed due to the use of a center-off-toggle switch. If the switch is replaced with the 4 position selector switch, the 4th pattern is available for free?
-After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary adaptive colors with 0x00 Black and 0x0F White.\
+After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary adaptive colors from 0x00 Black to 0x0F White with combinations of colors order by the low nibble D0 to D3 on the EPROM data lines. \
 
 Referrencing to the [PT-430 schematic](docs/PRACTEL%20PT430%20Colorbar%20Generator.pdf)
 
