@@ -1,5 +1,5 @@
 # PRACTEL PT-430 Color bar Generator EPROM Code generator.
-The PRACTEL PT-430, were developed in the early 1990s for the Australian broadcast industry, and primarily used in (ENG) Electronic News Gathering to provide a constant video and audio between the station over a microwave link.
+The [PRACTEL](doc/practel_info.md) PT-430, were developed in the early 1990s for the Australian broadcast industry, and primarily used in (ENG) Electronic News Gathering to provide a constant video and audio between the station over a microwave link.
 
 <table align="center">
 <tr>
