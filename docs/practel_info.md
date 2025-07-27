@@ -6,7 +6,8 @@ Practel International Pty Ltd are a company based in Wayville in the Australian 
 They have achieved revenues of AU$5-10 mil. of which export revenues have accounted for AU$1-3 mil. International companies interested in importing from Australia are welcome to use the contact details below.
 
 ### At a glance:
-Company name: Practel International Pty Ltd
+#### Company name: 
+Practel International Pty Ltd
 Main business activities: Audio amplifiers telecommunication switching systems, audio visual broadcast equipment and security system
 
 #### Production Manager
