@@ -51,27 +51,66 @@ The reverse engineering journey has sharpened my understanding of memory address
 
 ---
 
-# Moreover:-
-The original EPROM program I believe was written in GW Basic unfortunately, now un-obtainium the original disk is more than likely gone for ever stashed with the DOS 6.1 disk set?
+Here’s your content, clearly structured and enhanced in Markdown for readability:
 
-The generator produce 3 working patterns in 4:3 aspect ratio of color black, color bars and pulse-and-bar test patterns. Both the Color bars and pulse-and-bar produced a center-aligned station ID.
-My program generate 4 patterns the 4th pattern not able to be displayed due to the use of a center-off-toggle switch. If the switch is replaced with the 4 position selector switch, the 4th pattern is available for free?
-After dumping the EPROM HEX code, and navigating the schematic, the PT430 can effectively only generate primary/secondary adaptive colors from 0x00 Black through to 0x0F white with combibations of the pattern on the lower nibble D0 to D3 on the EPROM data lines.
+---
 
-Referrencing to the [PT-430 schematic](docs/PRACTEL%20PT430%20Colorbar%20Generator.pdf)
+## ⚙️ How It Works
 
-Cascaded 4 bit counters (74HC393) count 7-bits horizontally clocking out the same line for 128 pixels , then once at line 140, derived from vertical counter a 4-bit binary up counter (4520) takes over clocking out 16 lines of odd/even lines of either color bars of color black pattern overlayed with text id chars bitmap pixels for 7 lines (5x7 font) of which repeat for odd/even fields (14 lines) then is held at reset at line 156 repeating the last line 16 till the end of the next frame awaiting another vertical interval.
+The original EPROM program for the PT-430 was likely written in GW-BASIC. Unfortunately, the disk containing the source code is now “un-obtainium”—it’s probably lost forever, possibly tucked away with an old DOS 6.1 disk set!
 
-## 27C64 8K EPROM addressing as I see it.
-### Address Map Overview
-A0–A6: (7 bits) Selects the first 140 lines of the pattern, a cascaded 4bit binary ripple counter 74HC393(IC7) clocked at 5Mhz to form the pixel clock.
+### 🖼️ Test Pattern Generation
 
-A7–A10: (4 bits) Selects 14 lines dedicated to the white ID overlay text counter CD4520 (IC5:B) binary up counter.
+- The PT-430 generator produces **three working patterns** in a 4:3 aspect ratio:
+  - **Color Black**
+  - **Color Bars**
+  - **Pulse-and-Bar** test patterns
+- Both the Color Bars and Pulse-and-Bar patterns feature a **center-aligned station ID**.
+- **My program generates four patterns**—however, the 4th pattern can't be displayed without modifying the hardware. The original uses a center-off toggle switch; replacing it with a 4-position selector switch unlocks the 4th pattern for free!
 
-A11–A12: (2 bits) Pattern selector via the front panel pattern selection toggle switch.
+### 🧩 EPROM Dump & Pattern Logic
 
-7 bits translates to a 2K pattern blocks addressing effectively 4 patterns. 
-The 4th pattern is not used without modification to the center-of-toggle switch:
+- After dumping the EPROM hex code and studying the schematic, I found:
+  - The PT-430 can generate **primary/secondary adaptive colors** from `0x00` (Black) up to `0x0F` (White).
+  - Pattern combinations are determined by the lower nibble (`D0` to `D3`) on the EPROM data lines.
+
+> 📄 **Reference:** [PT-430 schematic](docs/PRACTEL%20PT430%20Colorbar%20Generator.pdf)
+
+---
+
+## ⏱️ Timing & Pattern Rendering Details
+
+- **Cascaded 4-bit counters** (`74HC393`) count 7 bits horizontally.
+  - This clocks out the same line for **128 pixels**.
+- At **line 140**, a **4-bit binary up counter** (`CD4520`) takes over, clocking out 16 lines:
+  - Odd/even lines display either color bars or color black.
+  - Text ID character bitmaps (5x7 font) are overlayed for 7 lines, repeating for odd/even fields (14 lines).
+  - At **line 156**, the system is held at reset, repeating the last line 16 times until the next frame, awaiting another vertical interval.
+
+---
+
+## 💾 27C64 8K EPROM Addressing
+
+### 🗺️ Address Map Overview
+
+- **A0–A6 (7 bits):**  
+  Selects the first 140 lines of the pattern.  
+  - Driven by a cascaded 4-bit binary ripple counter (`74HC393`, IC7) clocked at 5 MHz for the pixel clock.
+
+- **A7–A10 (4 bits):**  
+  Selects 14 lines dedicated to the white ID overlay text.  
+  - Managed by a binary up counter (`CD4520`, IC5:B).
+
+- **A11–A12 (2 bits):**  
+  Pattern selector via the front panel pattern selection toggle switch.
+
+**Summary:**  
+- 7 bits = 2K pattern block addressing, effectively supporting **4 patterns**.
+- The 4th pattern is not used unless the center-off toggle switch is replaced with a 4-position selector.
+
+---
+
+### 🗺️ Address Map Table
 
 | Address Range   | A12 | A11 | Description           | Pattern                        |
 |-----------------|-----|-----|-----------------------|--------------------------------|
