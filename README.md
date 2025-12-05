@@ -27,7 +27,7 @@ The [PRACTEL](docs/practel_info.md) PT-430, were developed in the early 1990s fo
 </table>
 
 
-This project is my suuccessful reverse Engineering of the code within the EPROM and developing a C99 program to re-generate both the patterns and ID text overly for the purpose of personalise the test patterns and identification text on the PT-430.
+This project is my suuccessful reverse Engineering of the code within the EPROM and developing a C program to re-generate both the patterns and ID text overly for the purpose of personalise the test patterns and identification text on the PT-430.
 There remains a few PT-430 generators around with the knowledge that not all is lost and continued using the PT430 for amateur television (ATV) applications. 
 4:3 PAL BG format is old skool however, there maybe instances for using and converting the CVBS output into DVB with some cheap converters. I know both the SAA1043 and SAA1044 philips sync generator and subcarrier coupler were well known to be used in top end cameras and studio quality sync pulse generators.
 
