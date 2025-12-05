@@ -25,13 +25,31 @@ The [PRACTEL](docs/practel_info.md) PT-430, were developed in the early 1990s fo
   </td>
 </tr>
 </table>
+---
 
+# ✨ Project Overview
 
-This project is my suuccessful reverse Engineering of the code within the EPROM and developing a C program to re-generate both the patterns and ID text overly for the purpose of personalise the test patterns and identification text on the PT-430.
-There remains a few PT-430 generators around with the knowledge that not all is lost and continued using the PT430 for amateur television (ATV) applications. 
-4:3 PAL BG format is old skool however, there maybe instances for using and converting the CVBS output into DVB with some cheap converters. I know both the SAA1043 and SAA1044 philips sync generator and subcarrier coupler were well known to be used in top end cameras and studio quality sync pulse generators.
+This project showcases my successful reverse engineering of the code stored in the EPROM of the PT-430. I developed a C program capable of regenerating both the test patterns and the ID text overlays, allowing for personalized test patterns and identification text on the PT-430 generator.
 
-The reverse Engineering continues to hone my skills of understanding the addressing and developing a C program for windows and linux with the linux build yet untested.
+---
+
+## 📺 Keeping the PT-430 Alive
+
+A handful of PT-430 generators are still in use, proving that not all classic tech has faded away! Thanks to this work, the PT-430 continues to be a valuable tool for amateur television (ATV) enthusiasts. While the 4:3 PAL BG format may seem "old school," there are still scenarios where its CVBS output can be converted to DVB using affordable converters.
+
+---
+
+## 🎛️ A Nod to Classic Hardware
+
+I have a special appreciation for the **SAA1043** and **SAA1044** Philips sync generator and subcarrier coupler chips. These components were renowned for their use in high-end cameras and studio-grade sync pulse generators—a testament to their quality and reliability.
+
+---
+
+## 🛠️ Growing My Skills
+
+The reverse engineering journey has sharpened my understanding of memory addressing and embedded systems. I’ve also created a C program that runs on both Windows and Linux (though the Linux build is still awaiting its first test). This ongoing project continues to challenge and expand my technical abilities.
+
+---
 
 # Moreover:-
 The original EPROM program I believe was written in GW Basic unfortunately, now un-obtainium the original disk is more than likely gone for ever stashed with the DOS 6.1 disk set?
